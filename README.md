@@ -1,10 +1,10 @@
 Чтобы запустить этот проект нужно сначала выполнить такие команды (по порядку):
 
-1) composer global require "fxp/composer-asset-plugin:^1.2.0"
+1) Выполнить команду: composer global require "fxp/composer-asset-plugin:^1.2.0"
 
-2) composer update или composer install
+2) Выполнить команду: composer update или composer install
 
-3) php init
+3) Выполнить команду: php init
 
 4) следовать инструкциям php init
 
