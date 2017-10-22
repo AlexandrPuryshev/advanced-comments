@@ -61,6 +61,8 @@
 
 6) В папках frontend или backend/tests/unit.suite.yml указать свои данный для подключение к базе данных (yii2advacned -> yii2advanced_test)
 
-7) Запустить codecept run unit
+7) По возможности в папках frontend или backend/codeception.yml указать свои данный для подключение к базе данных
+
+8) Запустить codecept run unit
 
 ### Полный dump базы данных храниться в папке "full_dump" в папке самого проекта
