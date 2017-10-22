@@ -3,8 +3,8 @@
 return [
     [
         'username' => 'admin',
-        'authKey' => 'XpymfHPnUkW5kH4Om0zccYkWIQ-gUV9U',
-        'passwordHash' => '$2y$13$aEEt.w9.q1iYsjlqxpHNSOhaGdFSYaUsUsVF/wp.gbkH2OIhc5vu2',
+        'authKey' => 'eckb2DLY9uv6r1hM6D73eoHPvv6BfnXc',
+        'passwordHash' => '$2y$13$D8areN6YSJh.fmR.Ww/sWOJ8EXRxNS9c7u7ubIrVozomTR8MY0PbO',
         'passwordResetToken' => 't5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv_' . time(),
         'createdAt' => '2017-10-17 11:24:24',
         'updatedAt' => '2017-10-17 11:24:24',

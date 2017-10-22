@@ -1,8 +1,8 @@
 <?php
 namespace frontend\models;
 
+use yii;
 use common\models\db\Comment;
-use Yii;
 use yii\base\Model;
 
 class CommentForm extends Model
@@ -32,6 +32,7 @@ class CommentForm extends Model
         $this->postId = $output['id'][0];
         parent::__construct();
     }
+
     /**
      * {@inheritdoc}
      */
@@ -42,12 +43,14 @@ class CommentForm extends Model
             [['content'], 'string', 'max' => 255]
         ];
     }
+
     public function attributeLabels()
     {
         return [
             'content' => 'Add new comment'
         ];
     }
+
     /**
      * Сохраняет комментарий.
      * @param Comment $comment модель комментария

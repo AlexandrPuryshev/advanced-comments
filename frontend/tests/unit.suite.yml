@@ -4,5 +4,14 @@ modules:
         - Yii2:
             part: [orm, email, fixtures]
         - Asserts
-        - Db
-        - \Helper\Unit
+    config:
+          enabled:
+            [Db]
+          Db:
+              dsn: 'mysql:host=localhost;dbname=yii2advanced_test;port=3306'
+              user: 'root'
+              password: ''
+              dump: 'tests/_data/dump/dump.sql'
+              cleanup: false
+              populate: true
+              reconnect: true

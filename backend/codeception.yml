@@ -10,6 +10,16 @@ settings:
     colors: true
     memory_limit: 1024M
 modules:
+    enabled:
+        [Db]
     config:
         Yii2:
             configFile: 'config/test-local.php'
+        Db:
+            dsn: 'mysql:host=localhost;dbname=yii2advanced_test;port=3306'
+            user: 'root'
+            password: ''
+            dump: 'tests/_data/dump/dump.sql'
+            cleanup: false
+            populate: false
+            reconnect: true

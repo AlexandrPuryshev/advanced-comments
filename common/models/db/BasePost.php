@@ -2,7 +2,6 @@
 
 namespace common\models\db;
 
-use Faker\Provider\UserAgent;
 use Yii;
 
 /**

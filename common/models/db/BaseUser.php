@@ -2,7 +2,7 @@
 
 namespace common\models\db;
 
-use Yii;
+use yii;
 
 /**
  * This is the model class for table "social_user".

@@ -9,6 +9,7 @@ use frontend\models\CommentForm;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\User;
 use yii\helpers\Url;
 
@@ -38,18 +39,6 @@ class CommentController extends Controller
     }
 
     /**
-     * Deletes an existing Comment model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
-    }
-
-    /**
      * Lists all Comment models.
      * @return mixed
      */
@@ -72,47 +61,6 @@ class CommentController extends Controller
 
         return $dataProvider;
     }
-
-    /**
-     * Creates a new Comment model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Comment();
-        $model->authorId = Yii::$app->user->id;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'post' => Post::find()->all()
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing Comment model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'post' => Post::find()->all()
-            ]);
-        }
-    }
-
 
     public function actionAdd()
     {

@@ -63,6 +63,26 @@ class User extends BaseUser implements \yii\web\IdentityInterface
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
+
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+
+    public static function findByPasswordResetToken($token)
+    {
+
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'passwordResetToken' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
     
 
 	/**
@@ -144,5 +164,13 @@ class User extends BaseUser implements \yii\web\IdentityInterface
     public function generateAuthKey()
     {
         $this->authKey = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->passwordResetToken = null;
     }
 }
