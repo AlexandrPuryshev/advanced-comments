@@ -26,39 +26,43 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <div class="site-header__inner">
-        <?php
-        NavBar::begin([
-            'brandLabel' => '<span>' . 'Blog Puryshev' . '</span>',
-            'brandUrl' => Yii::$app->homeUrl,
-            'options' => [
-                'class' => 'site-header navbar-fixed-top',
-            ],
-        ]);
-        $menuItems = [
-            ['label' =>  '<span class="glyphicon glyphicon-home"></span> Home', 'url' => ['/site/index']],
-        ];
-        if (Yii::$app->user->isGuest) {
-            $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'options' => ['class' => 'sign-login']];
-            $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-        } else {
-            $menuItems[] = ['label' => Yii::$app->user->identity->username, 'items' => [
-                        ['label' => 'List of users', 'url' => ['/user']],
-                        [
-                           'label' => 'Logout',
-                           'url' => ['/site/logout'],
-                           'linkOptions' => ['data-method' => 'post']]
-                        ]
-                    ];
-        }
-        echo Nav::widget([
-            'encodeLabels' => false,
-            'options' => ['class' => 'navbar-nav site-navigation__nav-list'],
-            'items' => $menuItems,
-        ]);
-        NavBar::end();
-        ?>
-    </div>
+    <?php
+    NavBar::begin([
+        'brandLabel' => 'My Company',
+        'brandUrl' => Yii::$app->homeUrl,
+        'options' => [
+            'class' => 'navbar-inverse navbar-fixed-top',
+        ],
+    ]);
+    $menuItems = [
+        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'About', 'url' => ['/site/about']],
+        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => 'Hello', 'url' => ['/site/say']],
+    ];
+    if (Yii::$app->user->isGuest) {
+        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+    } else {
+        $menuItems[] = ['label' => Yii::$app->user->identity->username, 'items' => [
+                    ['label' => 'Messages', 'url' => ['/messenger']],
+                    ['label' => 'List of users', 'url' => ['/user']],
+                    ['label' => 'My Categoryes', 'url' => ['/category']],
+                    ['label' => 'My Posts', 'url' => ['/post']],
+                    ['label' => 'My Comments', 'url' => ['/comment']],
+                    [
+                       'label' => 'Logout',
+                       'url' => ['/site/logout'],
+                       'linkOptions' => ['data-method' => 'post']]
+                    ]
+                ];
+    }
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => $menuItems,
+    ]);
+    NavBar::end();
+    ?>
 
     <div class="container">
         <?= Breadcrumbs::widget([

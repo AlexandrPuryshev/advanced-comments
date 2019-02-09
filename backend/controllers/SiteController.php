@@ -1,13 +1,45 @@
 <?php
 namespace backend\controllers;
+
 use Yii;
-use backend\models\LoginForm;
 use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use common\models\LoginForm;
+
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -18,30 +50,45 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+             'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
         ];
     }
-    
+
+	 /**
+	 * Displays hello world.
+	 *
+	 * @return string
+	 */
+    public function actionSay($message = 'Hello wolrd')
+    {
+        return $this->render('say', ['message' => $message]);
+    }
+
 
     /**
-     * Logs out the current user.
+     * Displays homepage.
      *
-     * @return mixed
+     * @return string
      */
-    public function actionLogout()
+    public function actionIndex()
     {
-        Yii::$app->user->logout();
-        return $this->goHome();
+        return $this->render('index');
     }
+
     /**
-     * Logs in a user.
+     * Login action.
      *
-     * @return mixed
+     * @return string
      */
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -51,15 +98,16 @@ class SiteController extends Controller
             ]);
         }
     }
+
     /**
+     * Logout action.
      *
-     *\\\\\\\
-     * Displays homepage.
-     *
-     * @return mixed
-    */
-    public function actionIndex()
+     * @return string
+     */
+    public function actionLogout()
     {
-        return $this->render('index');
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 }

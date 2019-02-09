@@ -1,36 +1,31 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
 /* @var $this yii\web\View */
+/* @var $model common\models\Post */
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['//site/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php
-    $image = null;
-    $categoryName = null;
-    if (isset($model->image)) {
-        $image = 'image/post/' . $model->image;
-    }
-    if (isset($model->categoryId)) {
-    }
-    ?>
+    <p>
+        <?= Html::a('Edit', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'You sure delete a post?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
 
     <?= DetailView::widget([
         'model' => $model,
-        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => 'Not Defined'],
         'attributes' => [
-            [
-                'attribute' => 'image',
-                'value' => $image,
-                'format' => ['image', ['width' => '100', 'height' => '100']],
-            ],
+            'id',
             'title',
             'anons:ntext',
             'content:ntext',
@@ -40,9 +35,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'createdAt',
         ],
     ]) ?>
-    <?php $url = Yii::$app->getUrlManager()->createUrl('comment/index'); ?>
-    <?php $data = Yii::$app->request->get('id'); ?>
-    <a id="linkLoadComments" onclick="getCommentsAjax('<?= $url ?>', '<?= $data ?>')"> Загрузить комментарии </a>
-    <div id="comment-container">
-    </div>
+
 </div>

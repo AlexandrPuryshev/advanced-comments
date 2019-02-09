@@ -1,12 +1,12 @@
 <?php
 
-use common\models\db\Post;
+use app\models\Post;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Post */
+/* @var $model app\models\Post */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $authors yii\db\ActiveRecord[] */
 /* @var $category yii\db\ActiveRecord[] */
@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'categoryId')->dropDownList(
+    <?= $form->field($model, 'category_id')->dropDownList(
         ArrayHelper::map($category, 'id', 'name')
     ) ?>
 
@@ -29,10 +29,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'publishStatus')->dropDownList(
+    <?= $form->field($model, 'publish_status')->dropDownList(
         [Post::STATUS_DRAFT => 'Draft', Post::STATUS_PUBLISH => 'Published']
     ) ?>
-    
+
+
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

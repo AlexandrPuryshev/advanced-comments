@@ -12,10 +12,12 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css'
+        'css/site.css',
+        'css/messenger.css',
     ];
     public $js = [
-        'js/addCommentAjax.js'
+        'js/messenger.js',
+        'js/client.js'
     ];
     public $jsOptions = array(
      'position' => \yii\web\View::POS_HEAD

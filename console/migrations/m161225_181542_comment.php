@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use common\models\Comment;
 
 class m161225_181542_comment extends Migration
 {
@@ -8,11 +9,11 @@ class m161225_181542_comment extends Migration
     {
         $this->createTable('{{%comment}}', [
             'id' => $this->primaryKey(),
-            'parentId' => $this->integer(),
+            'title' => $this->string()->notNull(),
             'content' => $this->string()->notNull(),
             'postId' => $this->integer(),
             'authorId' => $this->integer()
-        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+        ]);
 
         $this->addForeignKey(
             'FK_comment_author', '{{%comment}}', 'authorId', '{{%user}}', 'id', 'SET NULL', 'CASCADE'

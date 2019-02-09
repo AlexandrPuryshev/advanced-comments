@@ -1,42 +1,50 @@
 <?php
 
-namespace backend\controllers;
+namespace app\controllers;
 
 use Yii;
-use common\models\db\BaseCategory;
+use app\models\Category;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
- * CategoryController implements the CRUD actions for BaseCategory model.
+ * CategoryController implements the CRUD actions for Category model.
  */
 class CategoryController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['category'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all BaseCategory models.
-     * @return mixed
+     * Список категорий.
+     * @return string
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => BaseCategory::find(),
+            'query' => Category::find(),
         ]);
 
         return $this->render('index', [
@@ -45,9 +53,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Displays a single BaseCategory model.
-     * @param integer $id
-     * @return mixed
+     * Просмотр категории.
+     * @param string $id идентификатор просматриваемой категории
+     * @return string
      */
     public function actionView($id)
     {
@@ -57,13 +65,12 @@ class CategoryController extends Controller
     }
 
     /**
-     * Creates a new BaseCategory model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Создание категории.
+     * @return string|Response
      */
     public function actionCreate()
     {
-        $model = new BaseCategory();
+        $model = new Category();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,10 +82,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Updates an existing BaseCategory model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
+     * Редактирование категории.
+     * @param string $id идентификатор редактируемой категории
+     * @return string|Response
      */
     public function actionUpdate($id)
     {
@@ -94,10 +100,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Deletes an existing BaseCategory model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * Удаление категории
+     * @param string $id идентификатор удаляемой категории
+     * @return Response
      */
     public function actionDelete($id)
     {
@@ -107,15 +112,15 @@ class CategoryController extends Controller
     }
 
     /**
-     * Finds the BaseCategory model based on its primary key value.
+     * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return BaseCategory the loaded model
+     * @param string $id
+     * @return Category the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = BaseCategory::findOne($id)) !== null) {
+        if (($model = Category::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

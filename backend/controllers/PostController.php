@@ -1,95 +1,76 @@
 <?php
 
-namespace backend\controllers;
+namespace app\controllers;
 
-use common\models\db\Category;
-use common\models\db\User;
-use yii;
-use common\models\forms\UploadForm;
-use yii\web\UploadedFile;
-use common\models\db\Post;
+use app\models\Category;
+use app\models\Tags;
+use app\models\User;
+use app\models\LoginForm;
+use app\models\Comment;
+use Yii;
+use app\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\web\Response;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
+use yii\bootstrap\Alert;
 /**
- * PostController implements the CRUD actions for BasePost model.
+ * CRUD операции модели "Посты".
  */
 class PostController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all BasePost models.
-     * @return mixed
+     * Список постов.
+     * @return string
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Post::find(),
-        ]);
+        $post = new Post();
+        $category = new Category();
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'posts' => $post->getPublishedPosts(),
+            'categories' => $category->getCategories()
         ]);
     }
 
     /**
-     * Displays a single BasePost model.
-     * @param integer $id
-     * @return mixed
+     * Просмотр поста.
+     * @param string $id идентификатор поста
+     * @return string
      */
     public function actionView($id)
     {
+        $post = new Post();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            //'commentForm' => new Comment(Url::to(['comment/add', 'id' => $id])),
         ]);
-    }
-
-    private function saveModel($model, $view)
-    {
-        $upload = new UploadForm();
-        /* push auto author id in field author_id */
-        $model->authorId = Yii::$app->user->id;
-        $upload->imageFile = UploadedFile::getInstance($upload, 'imageFile');
-        // if you update, older image you delete, if uploading image is null
-        $pathForImage = (Yii::getAlias('@app') . "\\web\\" . Yii::getAlias('@imageUrlPathPost'). '\\' . $model->image . ".jpg");
-
-        if ($view == 'update') {
-            if(file_exists($pathForImage)){
-                unlink($pathForImage);
-            }
-            $model->image = null;
-        }
-
-        if ($upload->upload("post")) {
-            $model->image = $upload->name;
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render($view, [
-                'model' => $model,
-                'image' => $upload,
-                'authors' => User::find()->all(),
-                'category' => Category::find()->all()
-            ]);
-        }
     }
 
     /**
@@ -99,9 +80,25 @@ class PostController extends Controller
     public function actionCreate()
     {
         $model = new Post();
-        return $this->saveModel($model, 'create');
-    }
+        $upload = new UploadForm();
+        /* push autodata in field publish_date */
+        $model->publish_date = date("Y-m-d H:i:s");
+        /* push auto author id in field author_id */
+        $model->author_id = Yii::$app->user->id;
 
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $upload->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                $upload->upload();
+                return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                'image' => $upload,
+                'category' => Category::find()->all(),
+                'authors' => User::find()->all()
+            ]);
+        }
+    }
 
     /**
      * Редактирование поста.
@@ -111,27 +108,51 @@ class PostController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        return $this->saveModel($model, 'update');
+        $upload = new UploadForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $upload->imageFile = UploadedFile::getInstance($upload, 'imageFile');
+            if(!$upload->upload()){
+                Alert::begin([
+                    'options' => [
+                        'class' => 'alert-warning',
+                    ],
+                ]);
+                echo 'The image has not passed validation!';
+                Alert::end();
+            };
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            echo '<script> console.log("Зашли update render!") </script>';
+            return $this->render('update', [
+                'model' => $model,
+                'image' => $upload,
+                'authors' => User::find()->all(),
+                'category' => Category::find()->all()
+            ]);
+        }
     }
 
-
     /**
-     * Deletes an existing BasePost model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * Удаление поста.
+     * @param string $id идентификатор удаляемого поста
+     * @return Response
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->delete();
+
+        $this->actionIndex();
+
+        //return $this->redirect(['index']);
     }
 
     /**
-     * Finds the BasePost model based on its primary key value.
+     * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return BasePost the loaded model
+     * @param string $id
+     * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

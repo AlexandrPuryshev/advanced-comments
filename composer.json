@@ -9,7 +9,7 @@
         "issues": "https://github.com/yiisoft/yii2/issues?state=open",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.npm-asset-library/yii",
+        "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
@@ -19,15 +19,15 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "cboden/ratchet": "0.3.*",
-        "kartik-v/yii2-widget-fileinput": "@dev",
-        "kartik-v/bootstrap-fileinput": "dev-master"
+        "kartik-v/yii2-widget-fileinput": "*",
+        "troy/yii2-image-upload": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "guzzlehttp/guzzle": ">=4.1.4",
+
         "codeception/base": "^2.2.3",
         "codeception/verify": "~0.3.1"
     },

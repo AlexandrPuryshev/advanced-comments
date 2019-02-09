@@ -9,25 +9,29 @@ use yii\grid\GridView;
 $this->title = 'Comments';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="base-comment-index">
+<div class="comment-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Create Comment', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'parentId',
+            'pid',
+            'title',
             'content',
-            'postId',
-            'authorId',
+            'publish_status',
+            // 'post_id',
+            // 'author_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
 </div>

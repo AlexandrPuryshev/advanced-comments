@@ -6,9 +6,6 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
-Yii::setAlias('webroot', dirname(__DIR__) . '/web');
-Yii::setAlias('web', exec('hostname'));
-
 $config = [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
@@ -19,7 +16,7 @@ $config = [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\db\User',
+            'identityClass' => 'frontend\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -63,19 +60,37 @@ $config = [
         ],
         */
     ],
+
     'aliases' => [
-        '@imageUrlPathPost' => 'image/post',
-        '@imageUrlPathChat' => 'image/chat',
+        '@imagePath' => "@app/runtime/image",
     ],
     'params' => $params,
 ];
 
 if (YII_ENV_DEV) {
+    // configuration adjustments for 'dev' environment
+    /*$config['bootstrap'][] = 'debug';
+    $config['modules']['debug'] = [
+        'class' => 'yii\debug\Module',
+    ];*/
+
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+    ];
     $config['components']['log']['targets'][] = [
         'class' => 'yii\log\FileTarget',
         'levels' => ['info'],
         'categories' => ['apiRequest'],
         'logFile' => '@app/runtime/logs/API/requests.log',
+        'maxFileSize' => 1024 * 2,
+        'maxLogFiles' => 20,
+    ];
+    $config['components']['log']['targets'][] = [
+        'class' => 'yii\log\FileTarget',
+        'levels' => ['info'],
+        'categories' => ['apiResponse'],
+        'logFile' => '@app/runtime/logs/API/response.log',
         'maxFileSize' => 1024 * 2,
         'maxLogFiles' => 20,
     ];

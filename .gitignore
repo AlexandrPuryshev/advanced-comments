@@ -1,87 +1,27 @@
-assets/*
-!assets/.gitignore
-protected/runtime/*
-!protected/runtime/.gitignore
-protected/data/*.db
-themes/classic/views/
+# yii console commands
+/yii
+/yii_test
+/yii_test.bat
 
-# =========================
-# Operating System Files
-# =========================
+# phpstorm project files
+.idea
 
-# OSX
-# =========================
+# netbeans project files
+nbproject
 
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-# Windows
-# =========================
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-#PHPStorm
-.idea/
-
-#Yii2
 # zend studio for eclipse project files
 .buildpath
 .project
 .settings
-
-# sublime text project / workspace files
-*.sublime-project
-*.sublime-workspace
 
 # windows thumbnail cache
 Thumbs.db
 
 # composer vendor dir
 /vendor
-# cubrid install dir
-/cubrid
 
 # composer itself is not needed
 composer.phar
-
-# composer.lock in applications is ignored since it's automatically created by composer when application is installed
-/apps/*/composer.lock
 
 # Mac DS_Store Files
 .DS_Store
@@ -91,10 +31,5 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
-# ignore dev installed apps and extensions
-/apps
-/extensions
-
-# NPM packages
-/node_modules
-.env
+# vagrant runtime
+/.vagrant

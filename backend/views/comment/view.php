@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\BaseComment */
+/* @var $model common\models\Comment */
 
+$this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="base-comment-view">
+<div class="comment-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -28,10 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'parentId',
+            'pid',
+            'title',
             'content',
-            'postId',
-            'authorId',
+            'publish_status',
+            'post_id',
+            'author_id',
         ],
     ]) ?>
 

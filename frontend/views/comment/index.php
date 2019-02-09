@@ -1,18 +1,33 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ПК
- * Date: 14.10.2017
- * Time: 15:38
- */
 
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Comments';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="comment-index">
 
-<?php echo '<h2 id="title-comments"> Comments </h2>' ?>
-<?= $this->render('shortViewComments', [
-    'model' => $model,
-]) ?>
+    <h1><?= Html::encode($this->title) ?></h1>
 
-<?= $this->render('_form', [
-    'model' => $commentForm
-]); ?>
+    <p>
+        <?= Html::a('Create Comment', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'title',
+            'content',
+            'postId',
+            'authorId',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
+</div>

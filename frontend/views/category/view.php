@@ -1,49 +1,37 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: georgy
- * Date: 18.10.14
- * Time: 2:14
- */
-namespace frontend\views\category;
 
-use Yii;
 use yii\helpers\Html;
+use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/** @var $category \common\models\db\Category текущая категория */
-/** @var $categories \yii\data\ActiveDataProvider список категорий */
-/** @var $posts \yii\data\ActiveDataProvider список категорий */
+/* @var $model app\models\Category */
 
-$this->title = 'Category ' . $category->name;
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<div class="col-sm-8 post-index">
+<div class="category-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <hr class="smallHr">
+    <p>
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
 
-    <?php
-    foreach ($posts->models as $post) {
-        echo $this->render('//post/shortView', [
-            'model' => $post
-        ]);
-    }
-    ?>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'name',
+            'description',
+        ],
+    ]) ?>
 
-</div>
-
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar sidebar">
-    <h1 class="category">Category</h1>
-    <ul>
-        <?php
-        foreach ($categories->models as $category) {
-            echo $this->render('shortViewCategory', [
-                'model' => $category
-            ]);
-        }
-        ?>
-    </ul>
 </div>

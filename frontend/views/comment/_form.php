@@ -1,37 +1,29 @@
 <?php
 
-namespace frontend\views;
-
-use yii;
+use app\models\Post;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+/* @var $this yii\web\View */
+/* @var $model common\models\Comment */
+/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="comment-form">
-    <?php $form = ActiveForm::begin([
-        'action' => ['comment/add'],
-        'options' => ['id' => 'comment-form-id'],
-        'enableClientValidation' => true,
-        'enableAjaxValidation' => false,
-    ]); ?>
-        
-    <?= $form->field($model, 'postId')->hiddenInput(['value' => $model->postId])->label(false) ?>
-    <?= $form->field($model, 'parentId')->hiddenInput()->label(false) ?>
-    <?= $form->field($model, 'content')->textarea(['maxlength' => 255]) ?>
+
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
+
+    <?= $form->field($model, 'content')->textInput(['maxlength' => 255]) ?>
+
+    <?= $form->field($model, 'postId')->dropDownList(ArrayHelper::map($post, 'id', 'title'))?>
 
     <div class="form-group">
-        <?= Html::submitButton('Add', ['id' => 'btnCommentSbmt', 'class' => 'btn btn-success', 'data-method' => 'post']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-    <?php ActiveForm::end(); ?>
-</div>
 
-<script>
-    $('#comment-form-id').on('beforeSubmit', function(e) {
-        addCommentFromForm();
-        return false;
-    }).on('submit', function(e){
-        addCommentFromForm();
-        return false;
-    });
-</script>
+    <?php ActiveForm::end(); ?>
+
+</div>

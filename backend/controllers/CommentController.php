@@ -1,18 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace app\controllers;
 
-use common\models\db\Post;
-use common\models\db\User;
-use yii;
+use Yii;
+use app\models\Comment;
+use app\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\db\Comment;
 
 /**
- * CommentController implements the CRUD actions for BaseComment model.
+ * CommentController implements the CRUD actions for Comment model.
  */
 class CommentController extends Controller
 {
@@ -22,17 +22,26 @@ class CommentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all BaseComment models.
+     * Lists all Comment models.
      * @return mixed
      */
     public function actionIndex()
@@ -47,7 +56,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Displays a single BaseComment model.
+     * Displays a single Comment model.
      * @param integer $id
      * @return mixed
      */
@@ -59,27 +68,27 @@ class CommentController extends Controller
     }
 
     /**
-     * Creates a new BaseComment model.
+     * Creates a new Comment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         $model = new Comment();
+        $model->author_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'posts' => Post::find()->all(),
-                'users' => User::find()->all()
+                'post' => Post::find()->all()
             ]);
         }
     }
 
     /**
-     * Updates an existing BaseComment model.
+     * Updates an existing Comment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -93,12 +102,13 @@ class CommentController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'post' => Post::find()->all()
             ]);
         }
     }
 
     /**
-     * Deletes an existing BaseComment model.
+     * Deletes an existing Comment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -106,14 +116,15 @@ class CommentController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the BaseComment model based on its primary key value.
+     * Finds the Comment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return BaseComment the loaded model
+     * @return Comment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
